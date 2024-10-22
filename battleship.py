@@ -34,9 +34,11 @@ class BattleshipGame:
                         break
 
     def check_hit(self, grid, x, y):
+        #bool return type
         return grid[x][y] == SHIP
 
     def handle_hit_or_miss(self, grid, shots_grid, x, y):
+        #bool return type
         if self.check_hit(grid, x, y):
             grid[x][y] = HIT
             shots_grid[x][y] = HIT

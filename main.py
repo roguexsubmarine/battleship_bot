@@ -21,7 +21,7 @@ def main():
         
         # Draw both grids: Player's on the left, AI's on the right with spacing
         draw_grid(screen, game.player_grid, offset=0)  # Player's grid (left)
-        draw_grid(screen, game.player_shots, offset=(WIDTH // 2) + GRID_SPACING)  # Player's shots on AI's grid (right)
+        draw_grid(screen, game.player_shots, offset=((WIDTH // 2) + GRID_SPACING))  # Player's shots on AI's grid (right)
 
         # Check for quit events
         if handle_quit_event():
@@ -42,7 +42,12 @@ def main():
                     if game.all_ships_sunk(game.ai_grid):
                         print("Player wins!")
                         running = False
-                    player_turn = False  # Switch to AI's turn
+                        
+                    #if hit it is players turn but if not then it is bots turn
+                    if hit:
+                        player_turn = True
+                    else:
+                        player_turn = False
 
         else:
             # AI makes its move
@@ -56,13 +61,19 @@ def main():
             if game.all_ships_sunk(game.player_grid):
                 print("AI wins!")
                 running = False
-            player_turn = True  # Switch back to player's turn
+            
+
+            #if hit it is bots turn again else switch to player
+            if hit:
+                player_turn = False
+            else:
+                player_turn = True
 
         # Update the display, passing the screen object
         update_display(screen)
 
         # Slow down AI for visualization
-        pygame.time.delay(1000)
+        pygame.time.delay(250)
 
     pygame.quit()
 
