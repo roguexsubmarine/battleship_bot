@@ -1,5 +1,5 @@
 import pygame
-from gui import initialize_screen, draw_grid, update_display, handle_quit_event, handle_mouse_click
+from gui import initialize_screen, draw_grid, update_display, handle_quit_event, handle_mouse_click, load_images
 from battleship import BattleshipGame, EMPTY, HIT, MISS
 from ai_bot import AIBot
 
@@ -12,16 +12,20 @@ def main():
     game = BattleshipGame()
     ai_bot = AIBot()
 
+    # Load images (sea, miss, ship, hit, background)
+    images = load_images()
+
     player_turn = True
     running = True
 
     while running:
         # Fill background
         screen.fill((255, 255, 255))
-        
+        screen.blit(images[4], (0, 0))  # Set the background image
+
         # Draw both grids: Player's on the left, AI's on the right with spacing
-        draw_grid(screen, game.player_grid, offset=0)  # Player's grid (left)
-        draw_grid(screen, game.player_shots, offset=((WIDTH // 2) + GRID_SPACING))  # Player's shots on AI's grid (right)
+        draw_grid(screen, game.player_grid, images, offset=0)  # Player's grid (left)
+        draw_grid(screen, game.player_shots, images, offset=((WIDTH // 2) + GRID_SPACING))  # Player's shots on AI's grid (right)
 
         # Check for quit events
         if handle_quit_event():
@@ -42,17 +46,14 @@ def main():
                     if game.all_ships_sunk(game.ai_grid):
                         print("Player wins!")
                         running = False
-                        
-                    #if hit it is players turn but if not then it is bots turn
-                    if hit:
-                        player_turn = True
-                    else:
-                        player_turn = False
+
+                    # If hit, it's still the player's turn; otherwise, switch to AI
+                    player_turn = hit
 
         else:
             # AI makes its move
             x, y = ai_bot.ai_shot(game.player_grid)
-            hit = game.handle_hit_or_miss(game.player_grid, game.player_grid, x, y)  # Call the correct function
+            hit = game.handle_hit_or_miss(game.player_grid, game.player_grid, x, y)
             if hit:
                 print(f"AI hits at ({x}, {y})")
             else:
@@ -61,15 +62,11 @@ def main():
             if game.all_ships_sunk(game.player_grid):
                 print("AI wins!")
                 running = False
-            
 
-            #if hit it is bots turn again else switch to player
-            if hit:
-                player_turn = False
-            else:
-                player_turn = True
+            # If hit, it's still the AI's turn; otherwise, switch to the player
+            player_turn = not hit
 
-        # Update the display, passing the screen object
+        # Update the display
         update_display(screen)
 
         # Slow down AI for visualization
