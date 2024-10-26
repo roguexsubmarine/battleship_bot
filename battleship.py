@@ -14,7 +14,7 @@ class BattleshipGame:
         self.place_ships(self.ai_grid)
 
     def place_ships(self, grid):
-        ship_lengths = [5, 4, 3, 3, 2]  # Carrier, battleship, cruiser, submarine, destroyer
+        ship_lengths = [5, 4, 3, 3, 2, 2, 2]  # Carrier, battleship, cruiser, submarine, destroyer
         for length in ship_lengths:
             while True:
                 orientation = random.choice(['H', 'V'])

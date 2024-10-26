@@ -51,10 +51,14 @@ def main():
                     player_turn = hit
         else:
             # AI makes its move
-            x, y = ai_bot.ai_shot(game.player_grid)
-            hit = game.handle_hit_or_miss(game.player_grid, game.player_grid, x, y)
-            ai_bot.handle_shot_result(x, y, hit)  # Update AI's knowledge of the result
+            #masking the ship
+            masked_grid = [[0 if cell == 1 else cell for cell in row] for row in game.player_grid]
             
+            x, y = ai_bot.ai_shot(masked_grid)
+            hit = game.handle_hit_or_miss(game.player_grid, game.player_grid, x, y)
+            ai_bot.handle_shot_result(x, y, hit)
+
+                        
             if hit:
                 print(f"AI hits at ({x}, {y})")
             else:
