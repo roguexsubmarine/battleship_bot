@@ -4,8 +4,8 @@ from battleship import BattleshipGame, EMPTY, HIT, MISS
 from ai_bot import AIBot
 
 # Constants
-WIDTH, HEIGHT = 1300, 600  # Two grids with separation
-GRID_SPACING = 100  # Separation between grids
+WIDTH, HEIGHT = 1320, 600  # Two grids with separation
+GRID_SPACING = 120  # Separation between grids
 
 def main():
     screen = initialize_screen(WIDTH, HEIGHT)
