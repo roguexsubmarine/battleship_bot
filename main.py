@@ -50,6 +50,9 @@ def main():
                     # If hit, it's still the player's turn; otherwise, switch to AI
                     player_turn = hit
         else:
+            # Slow down AI for visualization
+            pygame.time.delay(250)
+        
             # AI makes its move
             #masking the ship
             masked_grid = [[0 if cell == 1 else cell for cell in row] for row in game.player_grid]
@@ -74,8 +77,7 @@ def main():
         # Update the display
         update_display(screen)
 
-        # Slow down AI for visualization
-        pygame.time.delay(250)
+    
 
     pygame.quit()
 
