@@ -4,14 +4,16 @@ import pygame
 CELL_SIZE = 60
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+RED = (255, 0, 0)  # Testing color for labels
 GREEN = (0, 255, 0)  # Player's board color
 ORANGE = (255, 165, 0)  # AI's board color for hits/misses
 
-GAP = 2*CELL_SIZE
+GAP = 2 * CELL_SIZE
+LABEL_OFFSET_Y = 10 * CELL_SIZE + 40  # Increased position below the grid
 
 def initialize_screen(width, height):
     pygame.init()
-    screen = pygame.display.set_mode((width + CELL_SIZE, height))  # Added extra width for better visibility
+    screen = pygame.display.set_mode((width + CELL_SIZE, height + 2))  # Added extra width and height for labels
     pygame.display.set_caption("Battleship Multiplayer (Player vs AI)")
     return screen
 
@@ -66,14 +68,18 @@ def handle_mouse_click(pos, offset=0):
         return row, col
     return None, None
 
-
 # Main game loop example
 def main():
-    screen = initialize_screen(20*CELL_SIZE + GAP, 10*CELL_SIZE)
+    screen = initialize_screen(20 * CELL_SIZE + GAP, 10 * CELL_SIZE)
     images = load_images()
 
+    # Set up fonts for labels
+    font = pygame.font.SysFont("Arial", 24)
+    player_label = font.render("Your Territory", True, RED)  # Temporarily using RED for visibility
+    ai_label = font.render("Enemy Territory", True, RED)
+
     # Example grid: 0 = sea, 1 = ship, 2 = hit, 3 = miss
-    grid = [[0]*10 for _ in range(10)]  # A 10x10 grid filled with sea (0)
+    grid = [[0] * 10 for _ in range(10)]  # A 10x10 grid filled with sea (0)
 
     running = True
     while running:
@@ -90,9 +96,13 @@ def main():
 
         # Draw both player and AI grids (player on the left, AI on the right)
         draw_grid(screen, grid, images, offset=0)  # Player grid on the left
-        draw_grid(screen, grid, images, offset=(CELL_SIZE*10 + GAP))  # AI grid on the right
+        draw_grid(screen, grid, images, offset=(CELL_SIZE * 10 + GAP))  # AI grid on the right
 
-        update_display()
+        # Draw labels under each grid
+        screen.blit(player_label, (CELL_SIZE * 4, LABEL_OFFSET_Y))  # Adjusted position for center alignment
+        screen.blit(ai_label, ((CELL_SIZE * 10 + GAP) + CELL_SIZE * 4, LABEL_OFFSET_Y))
+
+        update_display(screen)
 
     pygame.quit()
 
