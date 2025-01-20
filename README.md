@@ -1,2 +1,3 @@
 # battleship_bot
-This game is part of Intro to AI coursework. 
+This game is part of Introduction to AI coursework. 
+
